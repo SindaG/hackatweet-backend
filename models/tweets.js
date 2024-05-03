@@ -2,9 +2,9 @@ const mongoose = require('mongoose');//Ne pas oublier cette ligne pour appeler m
 
 const tweetSchema = mongoose.Schema({
  content: String,
- time: Date,
- author: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
- NbrLike : Number
+ time: { type: Date, default: Date.now },
+ author: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+ NbrLike : { type: Number, default: 0}
 });
 
 const Tweet = mongoose.model('tweets', tweetSchema);

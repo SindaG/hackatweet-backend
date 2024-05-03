@@ -3,38 +3,33 @@ var router = express.Router();
 require('../models/connection');
 const { checkBody } = require('../modules/checkBody');
 const Tweet = require('../models/tweets');
-const User = require('../models/users');
+// const User = require('../models/users');
 
-
-
-let tweets = []
-
-router.post('/tweets', (req, res) => {
-  if (!checkBody(req.body, ['newTweet'])) {
-    res.json({ result: false, error: 'Your tweet is empty' })
-    return;
-  } else {
-    tweets.push(req.body.newTweet);
-    res.json({ tweetsList: tweets })
-  }
-});
-
-router.post('/tweets', (req, res) => {
+router.post('/newtweet', (req, res) => {
   if (!checkBody(req.body, [])) {
     res.json({ result: false, error: 'Your tweet is empty' });
     return;
   } 
       const newTweet = new Tweet({
-      content: req.body.string,
-      time: req.body.date,
-      author: User._id,
-      NbrLike: 0
+      content: req.body.text,
+      author: req.body._id,
       });
 
       newTweet.save().then(newDoc => {
         res.json({ result: true, newDoc});
       });
-  });
+
+});
+
+router.get('/alltweets', (req, res) => {
+    Tweet.findOne().then(data => {
+      if (data) {
+        res.json({ result: true, allTweets : data});
+      } else {
+        res.json({ result: false, error: 'No tweet yet' });
+      }
+    });
+})
 
 
 
